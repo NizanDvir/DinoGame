@@ -18,12 +18,12 @@ class Dino:
         self.normal_height = DINOHEIGHT
         self.duck_height = DINOHEIGHT // 2
         self.duck_gravity = -1500  # Increased gravity while ducking
-        self.normal_gravity = -500  # Normal gravity
+        self.normal_gravity = -750  # Normal gravity
     
     def jump(self):
         #only allow jump if dino is on the ground (y==0)
         if self.y == 0 and not self.is_ducking:
-            self.yvelocity = 300
+            self.yvelocity = 400
     def duck(self):
         if not self.is_ducking:
             self.is_ducking = True
@@ -45,3 +45,7 @@ class Dino:
 
     def draw(self, gameDisplay):
         pygame.draw.rect(gameDisplay, self.color, [self.x, self.surfaceHeight-self.y-self.height, self.width, self.height])
+    def collides_with(self, obstacle):
+        dino_rect = pygame.Rect(self.x, self.surfaceHeight-self.y-self.height, self.width, self.height)
+        obstacle_rect = pygame.Rect(obstacle.x, obstacle.GroundHeight - obstacle.size, obstacle.size, obstacle.size)
+        return dino_rect.colliderect(obstacle_rect)

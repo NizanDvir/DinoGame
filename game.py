@@ -27,9 +27,9 @@ for i in range(4):
     lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
     Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
     
-
+game_over = False
 #game loop
-while True:
+while not game_over:
     t = pygame.time.get_ticks() #Get current time
     deltaTime = (t-lastFrame)/1000.0 #Find difference in time and then convert it to seconds
     lastFrame = t #set lastFrame as the current time for next frame.
@@ -60,12 +60,27 @@ while True:
             lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
             Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
             SCORE += 1
+        if dinosaur.collides_with(obs):
+            game_over = True
     
     lastObstacle -= VELOCITY*deltaTime
 
-
     pygame.draw.rect(gameDisplay, "black", [0,GROUND_HEIGHT,width,height-GROUND_HEIGHT])
-    # pygame.draw.rect(gameDisplay, "black", [xPos,yPos,40,50]) #make xPos the value of pygame 
-    # xPos += 1 #increment by 1
-    # yPos += 1 #increment by 1
-    pygame.display.update() # Update the window
+    # Draw score
+    font = pygame.font.Font(None, 36)
+    score_text = font.render(f"Score: {SCORE}", True, (0, 0, 0))
+    gameDisplay.blit(score_text, (10, 10))
+
+    pygame.display.update()
+    
+# Game over screen
+font = pygame.font.Font(None, 72)
+game_over_text = font.render("Game Over", True, (255, 0, 0))
+gameDisplay.blit(game_over_text, (width//2 - game_over_text.get_width()//2, height//2 - game_over_text.get_height()//2))
+pygame.display.update()
+
+# Wait for a moment before quitting
+pygame.time.wait(2000)
+
+pygame.quit()
+quit()
