@@ -7,8 +7,8 @@ pygame.init()
 
 size = width, height = 640, 480
 gameDisplay = pygame.display.set_mode(size) # Create the window
-xPos = 0
-yPos = 0
+# xPos = 0
+# yPos = 0
 GROUND_HEIGHT = height-200
 
 dinosaur = Dino(GROUND_HEIGHT)
@@ -27,6 +27,8 @@ for i in range(4):
     lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
     Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
     
+
+#game loop
 while True:
     t = pygame.time.get_ticks() #Get current time
     deltaTime = (t-lastFrame)/1000.0 #Find difference in time and then convert it to seconds
@@ -34,8 +36,13 @@ while True:
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE: #If that key is space
+            if event.key == pygame.K_UP: #If that key is space
                 dinosaur.jump() #Make dinosaur jump
+            if event.key == pygame.K_DOWN:
+                dinosaur.duck()
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                dinosaur.unduck()
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
@@ -43,7 +50,22 @@ while True:
     gameDisplay.fill("White")
 
     dinosaur.update(deltaTime)
-    dinosaur.draw(gameDisplay)   
+    dinosaur.draw(gameDisplay)
+
+    for obs in Obstacles:
+        obs.update(deltaTime, VELOCITY)
+        obs.draw(gameDisplay)
+        if obs.checkOver():
+            Obstacles.remove(obs)
+            lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
+            Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
+            SCORE += 1
+    
+    lastObstacle -= VELOCITY*deltaTime
+
 
     pygame.draw.rect(gameDisplay, "black", [0,GROUND_HEIGHT,width,height-GROUND_HEIGHT])
+    # pygame.draw.rect(gameDisplay, "black", [xPos,yPos,40,50]) #make xPos the value of pygame 
+    # xPos += 1 #increment by 1
+    # yPos += 1 #increment by 1
     pygame.display.update() # Update the window

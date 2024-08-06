@@ -13,14 +13,32 @@ class Dino:
         self.width = DINOWIDTH
         self.color = DINOCOLOR
         self.surfaceHeight = surfaceHeight
+
+        self.is_ducking = False
+        self.normal_height = DINOHEIGHT
+        self.duck_height = DINOHEIGHT // 2
+        self.duck_gravity = -1500  # Increased gravity while ducking
+        self.normal_gravity = -500  # Normal gravity
     
     def jump(self):
         #only allow jump if dino is on the ground (y==0)
-        if self.y == 0:
+        if self.y == 0 and not self.is_ducking:
             self.yvelocity = 300
+    def duck(self):
+        if not self.is_ducking:
+            self.is_ducking = True
+            self.height = self.duck_height
+            
+    def unduck(self):
+        if self.is_ducking:
+            self.is_ducking = False
+            self.height = self.normal_height
+        
+        
     def update(self, deltaTime):
         self.y += self.yvelocity * deltaTime
-        self.yvelocity += -500 * deltaTime #gravity
+        gravity = self.duck_gravity if self.is_ducking else self.normal_gravity
+        self.yvelocity += gravity * deltaTime 
         if self.y < 0:
             self.y = 0
             self.yvelocity = 0

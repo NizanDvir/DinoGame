@@ -1,6 +1,6 @@
 import pygame
 
-color = 0,0,255
+color = 0,255,0
 class Obstacle:
     def __init__(self, x, size, GroundHeight):
         self.x = x
