@@ -15,7 +15,7 @@ dinosaur = Dino(GROUND_HEIGHT)
 
 lastFrame = pygame.time.get_ticks() #get ticks returns current time in milliseconds
 
-MINGAP = 200
+MINGAP = 225
 VELOCITY = 300
 MAXGAP = 600
 Obstacles = []
@@ -24,6 +24,8 @@ lastObstacle = width
 SCORE = 0
 obstacleSize = 50
 for i in range(4):
+    #obs size be a random number between 50 and 100
+    obstacleSize = 50 + 25*random.random()
     lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
     Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
     
@@ -58,6 +60,7 @@ while not game_over:
         if obs.checkOver():
             Obstacles.remove(obs)
             lastObstacle += MINGAP+(MAXGAP-MINGAP)*random.random()
+            obstacleSize = 50 + 25*random.random()
             Obstacles.append(Obstacle(lastObstacle, obstacleSize, GROUND_HEIGHT))
             SCORE += 1
         if dinosaur.collides_with(obs):

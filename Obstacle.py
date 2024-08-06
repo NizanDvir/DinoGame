@@ -7,7 +7,7 @@ class Obstacle:
         self.size = size
         self.GroundHeight = GroundHeight
     def draw(self, gameDisplay):
-        pygame.draw.rect(gameDisplay, color, [self.x, self.GroundHeight-self.size, self.size, self.size])
+        pygame.draw.rect(gameDisplay, color, [self.x, self.GroundHeight-self.size, 50, self.size])
     def update(self, deltaTime, velocity):
         self.x -= velocity*deltaTime
     def checkOver(self):
